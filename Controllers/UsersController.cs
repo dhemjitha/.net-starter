@@ -50,9 +50,9 @@ namespace WebApplication6.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id) 
+        public IActionResult DeleteUser(int id)
         {
-         
+
             var userToDelete = new User { Id = id };
             var deletedUser = _services.DeletableUser(userToDelete);
             if (deletedUser == null)
@@ -61,6 +61,29 @@ namespace WebApplication6.Controllers
             }
             return Ok(deletedUser);
 
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser(int id, [FromBody] User user)
+        {
+            if (user == null)
+            {
+                return BadRequest("User data is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(user.Name) || string.IsNullOrWhiteSpace(user.Email))
+            {
+                return BadRequest("Name and Email are required fields.");
+            }
+
+            user.Id = id;
+            var updatedUser = _services.UpdateUser(user);
+
+            if (updatedUser == null)
+            {
+                return NotFound($"User with ID {id} not found.");
+            }
+            return Ok(updatedUser);
         }
     }
 }

@@ -55,5 +55,17 @@ namespace WebApplication6.Services
             }
             return null;
         }
+
+        public User UpdateUser(User user)
+        {
+            var existingUser = users.FirstOrDefault(u => u.Id == user.Id);
+            if (existingUser != null)
+            {
+                existingUser.Name = user.Name;
+                existingUser.Email = user.Email;
+                return existingUser;
+            }
+            return null;
+        }
     }
 }
